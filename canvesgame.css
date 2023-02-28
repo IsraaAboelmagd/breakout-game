@@ -1,0 +1,6 @@
+canvas { background: pink; }
+#myCanvas{
+   position: relative;
+   left:35vw;
+   top:35vh; 
+}
