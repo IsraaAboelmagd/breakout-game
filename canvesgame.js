@@ -1,31 +1,32 @@
 
 var canvas = document.getElementById("myCanvas");
+var bounce = document.getElementById("audio")
 var ctx = canvas.getContext("2d");
-var x = canvas.width/2;
-var y = canvas.height-30;
+var x = canvas.width / 2;
+var y = canvas.height - 30;
 var dx = 2;
 var dy = -2;
 var paddleHeight = 20;
 var paddleWidth = 100;
-var paddleX = (canvas.width-paddleWidth)/2;
+var paddleX = (canvas.width - paddleWidth) / 2;
 var rightPressed = false;
 var leftPressed = false;
 document.addEventListener("keydown", keyDownHandler, false);
 document.addEventListener("keyup", keyUpHandler, false);
 function keyDownHandler(e) {
-    if(e.key == "Right" || e.key == "ArrowRight") {
+    if (e.key == "Right" || e.key == "ArrowRight") {
         rightPressed = true;
     }
-    else if(e.key == "Left" || e.key == "ArrowLeft") {
+    else if (e.key == "Left" || e.key == "ArrowLeft") {
         leftPressed = true;
     }
 }
 
 function keyUpHandler(e) {
-    if(e.key == "Right" || e.key == "ArrowRight") {
+    if (e.key == "Right" || e.key == "ArrowRight") {
         rightPressed = false;
     }
-    else if(e.key == "Left" || e.key == "ArrowLeft") {
+    else if (e.key == "Left" || e.key == "ArrowLeft") {
         leftPressed = false;
     }
 }
@@ -42,7 +43,7 @@ function drawPaddle() {
     ctx.drawImage(paddleImg, paddleX, canvas.height - paddleHeight - 10, paddleWidth, paddleHeight);
     ctx.closePath();
     ctx.strokeStyle = "black";
-     ctx.stroke();
+    ctx.stroke();
 }
 
 
@@ -50,19 +51,19 @@ function draw() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     drawBlocks();
     drawPaddle();
-    if(rightPressed) {
+    if (rightPressed) {
         paddleX += 4;
-        if (paddleX + paddleWidth > canvas.width){
+        if (paddleX + paddleWidth > canvas.width) {
             paddleX = canvas.width - paddleWidth;
         }
     }
-    else if(leftPressed) {
+    else if (leftPressed) {
         paddleX -= 4;
-        if (paddleX < 0){
+        if (paddleX < 0) {
             paddleX = 0;
         }
     }
-    
+
     x += dx;
     y += dy;
 }
@@ -120,12 +121,68 @@ function drawBlocks() {
                 }
                 ctx.drawImage(img, blocks[c][r].x, blocks[c][r].y, blockWidth, blockHeight);
                 ctx.shadowBlur = 5;
-        ctx.shadowColor = "rgb(60, 60, 60)";
-        ctx.shadowOffsetX = 3;
-        ctx.shadowOffsetY = 2;
-        ctx.drawImage(img, blocks[c][r].x, blocks[c][r].y, blockWidth, blockHeight);
-        // Reset shadow properties to default
+                ctx.shadowColor = "rgb(60, 60, 60)";
+                ctx.shadowOffsetX = 3;
+                ctx.shadowOffsetY = 2;
+                ctx.drawImage(img, blocks[c][r].x, blocks[c][r].y, blockWidth, blockHeight);
+                // Reset shadow properties to default
             }
         }
     }
 }
+var ball = {
+    x: canvas.width / 2,
+    y: canvas.height - 30,
+    radius: 10,
+
+};
+let xDirection = 2
+let yDirection = -2
+
+
+function drawBall() {
+    ctx.beginPath();
+
+    ctx.arc(ball.x, ball.y, ball.radius, 0, Math.PI * 2);
+    ctx.fillStyle = "#0095DD";
+
+    ctx.fill();
+    ctx.closePath();
+
+
+    requestAnimationFrame(drawBall)
+
+
+}
+
+function moveBall() {
+    drawBall();
+
+    if (ball.x + xDirection > canvas.width - ball.radius || ball.x + xDirection < ball.radius) {
+        xDirection = -xDirection;
+        bounce.play()
+    }
+    if (ball.y + yDirection < ball.radius) {
+        yDirection = -yDirection
+        bounce.play()
+    }
+    else if (ball.y + yDirection > canvas.height - ball.radius) {
+        bounce.play()
+        if (ball.x > paddleX && ball.x < paddleX + paddleWidth) {
+            yDirection = -yDirection;
+        }
+        else {
+            alert("GAME OVER");
+            document.location.reload();
+            clearInterval(interval);
+
+        }
+
+    }
+
+    ball.x += xDirection
+    ball.y += yDirection
+
+}
+
+var interval = setInterval(moveBall,10)
