@@ -7,8 +7,8 @@ body {
 canvas { background: pink; }
 #myCanvas{
    position: relative;
-   left:35vw;
-   top:20vh; 
+   left:23vw;
+   top:15vh; 
    border: 1px solid black;
       background-image: url("canvasbg.png");
       background-size: cover; /* Optional */
