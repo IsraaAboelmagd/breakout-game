@@ -52,7 +52,7 @@ function keyUpHandler(e) {
 }
 // create an image object
 const paddleImg = new Image();
-paddleImg.src = "paddle11.jpeg";
+paddleImg.src = "Pictures/paddle11.jpeg";
 
 function drawPaddle() {
 
@@ -106,25 +106,18 @@ for (var c = 0; c < blockColumnCount; c++) {
         var blockX = (c * (blockWidth + blockPadding)) + blockOffsetLeft;
         var blockY = (r * (blockHeight + blockPadding)) + blockOffsetTop;
         blocks[c][r] = { x: blockX, y: blockY, status: 2, img : new Image() };
-        blocks.push(blocks[c][r]);
     }
 }
 
 function drawBlocks() {
     for (var c = 0; c < blockColumnCount; c++) {
         for (var r = 0; r < blockRowCount; r++) {
-            // var img = new Image();
-            // img.src = "blocksbg.jpg";
-            // ctx.shadowBlur = 5;
-            // ctx.shadowColor = "rgb(60, 60, 60)";
-            // ctx.shadowOffsetX = 3;
-            // ctx.shadowOffsetY = 2;
             if (blocks[c][r].status == 2) {   
-                blocks[c][r].img.src = 'blocksbg.jpg';
+                blocks[c][r].img.src = 'Pictures/blocksbg.jpg';
                 ctx.drawImage(blocks[c][r].img, blocks[c][r].x, blocks[c][r].y, blockWidth, blockHeight);
                 // Reset shadow properties to default
             } else if(blocks[c][r].status == 1){
-                blocks[c][r].img.src = 'Paddle.jpg';
+                blocks[c][r].img.src = 'Pictures/Paddle.jpg';
                 ctx.drawImage(blocks[c][r].img, blocks[c][r].x, blocks[c][r].y, blockWidth, blockHeight);
             }
         }
@@ -189,25 +182,23 @@ function moveBall() {
     blocksCollision();
 }
 function blocksCollision() {
-    let change = false;
     let ballInBlocks = (block) => 
                  ball.x + 2 * ball.radius > block.x &&
                  ball.x < block.x + blockWidth &&
                  ball.y + 2 * ball.radius > block.y &&
                  ball.y < block.y + blockHeight;
-    blocks.forEach((block) => {        
-        if (block.status > 0 && ballInBlocks(block)){
-                block.status--;
-                if (block.status == 0){
+        for (var c = 0; c < blockColumnCount; c++) {
+            for (var r = 0; r < blockRowCount; r++) {       
+        if (blocks[c][r].status > 0 && ballInBlocks(blocks[c][r])){
+            blocks[c][r].status--;
+                if (blocks[c][r].status == 0){
                     score += 10;
                 }
-                if (!change){
-                    change=true
-                    ballTouchBlock(block)
-                }
+                    ballTouchBlock(blocks[c][r])
 
         }
-    });
+            }
+        }
 }
     function ballTouchBlock(block) {
             let fromLeft = () => ball.x + 2 * ball.radius - xDirection <= block.x;

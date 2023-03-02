@@ -1,5 +1,5 @@
 body {
-   background-image: url('body1.jpeg');
+   background-image: url('Pictures/body1.jpeg');
    background-repeat: no-repeat;
    background-size: cover;
  }
@@ -8,7 +8,7 @@ body {
    left:23vw;
    top:15vh; 
    border: 1px solid black;
-      background-image: url("canvasbg.png");
+      background-image: url("Pictures/canvasbg.png");
       background-size: cover; /* Optional */
     
         
