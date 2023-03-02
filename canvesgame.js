@@ -136,8 +136,8 @@ var ball = {
     radius: 10,
 
 };
-let xDirection = 2
-let yDirection = -2
+let xDirection = 4
+let yDirection = -4 
 
 
 function drawBall() {
@@ -150,7 +150,7 @@ function drawBall() {
     ctx.closePath();
 
 
-    requestAnimationFrame(drawBall)
+    // requestAnimationFrame(drawBall)
 
 
 }
@@ -174,15 +174,14 @@ function moveBall() {
         else {
             alert("GAME OVER");
             document.location.reload();
-            clearInterval(interval);
-
+            cancelAnimationFrame(moveBall)
         }
 
     }
-
     ball.x += xDirection
     ball.y += yDirection
+    requestAnimationFrame(moveBall)
 
 }
 
-var interval = setInterval(moveBall,10)
+moveBall()
