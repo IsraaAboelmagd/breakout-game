@@ -73,52 +73,28 @@ var blockRowCount = 5;
 var blockColumnCount = 8;
 var blockWidth = 80;
 var blockHeight = 20;
-var blockPadding = 10;
+var blockPadding = 15;
 var blockOffsetTop = 30;
 var blockOffsetLeft = 30;
 
 var blocks = [];
-var redBlocks = [];
-var blueBlocks = [];
-
 for (var c = 0; c < blockColumnCount; c++) {
     blocks[c] = [];
     for (var r = 0; r < blockRowCount; r++) {
         var blockX = (c * (blockWidth + blockPadding)) + blockOffsetLeft;
         var blockY = (r * (blockHeight + blockPadding)) + blockOffsetTop;
         blocks[c][r] = { x: blockX, y: blockY, status: 1 };
-        redBlocks.push(blocks[c][r]);
+        blocks.push(blocks[c][r]);
     }
 }
 
-// function drawBlocks() {
-//     for (var c = 0; c < blockColumnCount; c++) {
-//         for (var r = 0; r < blockRowCount; r++) {
-//             if (blocks[c][r].status == 1) {
-//                 if (redBlocks.includes(blocks[c][r])) {
-//                     ctx.fillStyle = "#FF0000";
-//                 } else if (blueBlocks.includes(blocks[c][r])) {
-//                     ctx.fillStyle = "#0000FF";
-//                 } else {
-//                     ctx.fillStyle = "#0095DD";
-//                 }
-//                 ctx.fillRect(blocks[c][r].x, blocks[c][r].y, blockWidth, blockHeight);
-//             }
-//         }
-//     }
-// }
 function drawBlocks() {
     for (var c = 0; c < blockColumnCount; c++) {
         for (var r = 0; r < blockRowCount; r++) {
             if (blocks[c][r].status == 1) {
                 var img;
-                if (redBlocks.includes(blocks[c][r])) {
-                    img = document.getElementById("blocksbg"); //replace "red-image" with the ID of your red background image
-                } else if (blueBlocks.includes(blocks[c][r])) {
-                    img = document.getElementById("blue-image"); //replace "blue-image" with the ID of your blue background image
-                } else {
-                    img = document.getElementById("default-image"); //replace "default-image" with the ID of your default background image
-                }
+                img = document.getElementById("blocksbg"); //replace "red-image" with the ID of your red background image
+
                 ctx.drawImage(img, blocks[c][r].x, blocks[c][r].y, blockWidth, blockHeight);
                 ctx.shadowBlur = 5;
                 ctx.shadowColor = "rgb(60, 60, 60)";
@@ -136,8 +112,8 @@ var ball = {
     radius: 10,
 
 };
-let xDirection = 4
-let yDirection = -4 
+let xDirection = 2
+let yDirection = -2
 
 
 function drawBall() {
@@ -150,7 +126,7 @@ function drawBall() {
     ctx.closePath();
 
 
-    // requestAnimationFrame(drawBall)
+    requestAnimationFrame(drawBall)
 
 
 }
@@ -174,14 +150,15 @@ function moveBall() {
         else {
             alert("GAME OVER");
             document.location.reload();
-            cancelAnimationFrame(moveBall)
+            clearInterval(interval);
+
         }
 
     }
+
     ball.x += xDirection
     ball.y += yDirection
-    requestAnimationFrame(moveBall)
 
 }
 
-moveBall()
+var interval = setInterval(moveBall,10)
