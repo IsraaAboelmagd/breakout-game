@@ -52,7 +52,7 @@ function keyUpHandler(e) {
 }
 // create an image object
 const paddleImg = new Image();
-paddleImg.src = "Paddle.jpg";
+paddleImg.src = "paddle11.jpeg";
 
 function drawPaddle() {
 
@@ -149,10 +149,7 @@ function drawBall() {
     ctx.fill();
     ctx.closePath();
 
-
     requestAnimationFrame(drawBall)
-
-
 }
 
 function moveBall() {

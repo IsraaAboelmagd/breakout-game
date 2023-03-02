@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Breakout Game</title>
+    <style>
+      body {
+        background-color: #222;
+        color: #fff;
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+      }
+
+      h1 {
+        font-size: 4rem;
+        font-weight: bold;
+        text-align: center;
+        margin-bottom: 1rem;
+      }
+
+      p {
+        font-size: 1.2rem;
+        text-align: center;
+        margin-bottom: 3rem;
+      }
+
+      .button-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .button {
+        background-color: #ff4d4d;
+        color: #fff;
+        font-size: 2rem;
+        font-weight: bold;
+        text-transform: uppercase;
+        padding: 1.5rem 3rem;
+        border: none;
+        border-radius: 2rem;
+        box-shadow: 0 0.3rem 0.6rem rgba(0, 0, 0, 0.3);
+        cursor: pointer;
+        transition: all 0.2s ease-in-out;
+      }
+
+      .button:hover {
+        transform: translateY(-0.1rem);
+        box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.5);
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Breakout Game</h1>
+    <p>
+      Use the arrow keys to move the paddle and hit the ball to break the bricks.
+      Try to clear all the bricks to win!
+    </p>
+    <div class="button-container">
+      <button class="button" onclick="window.location.href='./canvesgame.html'">
+        Play Now
+      </button>
+    </div>
+  </body>
+</html>
