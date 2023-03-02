@@ -93,7 +93,7 @@ function drawBlocks() {
         for (var r = 0; r < blockRowCount; r++) {
             if (blocks[c][r].status == 1) {
                 var img;
-                img = document.getElementById("blocksbg"); //replace "red-image" with the ID of your red background image
+                img = document.getElementById("blocksbg"); 
 
                 ctx.drawImage(img, blocks[c][r].x, blocks[c][r].y, blockWidth, blockHeight);
                 ctx.shadowBlur = 5;
