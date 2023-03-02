@@ -89,12 +89,11 @@ for (var c = 0; c < blockColumnCount; c++) {
 }
 
 function drawBlocks() {
+    var img = new Image();
+    img.src = "blocksbg.jpg";
     for (var c = 0; c < blockColumnCount; c++) {
         for (var r = 0; r < blockRowCount; r++) {
             if (blocks[c][r].status == 1) {
-                var img;
-                img = document.getElementById("blocksbg"); 
-
                 ctx.drawImage(img, blocks[c][r].x, blocks[c][r].y, blockWidth, blockHeight);
                 ctx.shadowBlur = 5;
                 ctx.shadowColor = "rgb(60, 60, 60)";
