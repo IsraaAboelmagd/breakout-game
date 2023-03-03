@@ -51,12 +51,12 @@ canvas.parentNode.appendChild(StartPlay);
  playButton.style.width='20px'
  playButton.style.position='fixed';
  playButton.style.left='380px';
- playButton.style.top='125px'; 
+ playButton.style.top='90px'; 
  
  var volumeSlider = document.createElement("input");
  volumeSlider.style.position='fixed';
  volumeSlider.style.left='400px';
- volumeSlider.style.top='125px';
+ volumeSlider.style.top='90px';
  volumeSlider.type = "range";
  volumeSlider.min = 0;
  volumeSlider.max = 1;
@@ -91,7 +91,7 @@ let lives = 3;
 function drawLives() {
     ctx.font = "14px Verdana ";
     ctx.fillStyle = "red";
-    ctx.fillText(`Lives: ${lives}`, 730, 20);
+    ctx.fillText(`Lives: ${lives}`, 720, 20);
   }
   function gameOver(){
     isGameOver=true;
@@ -110,7 +110,7 @@ function drawLives() {
     function drawScore(){
         ctx.font ='14px Verdana';
         ctx.fillStyle = 'red';
-        ctx.fillText(`Score: ${score}`,canvas.width/2-40,20)
+        ctx.fillText(`Score: ${score}`,30,20)
     }
     ////////////////EndSound&GameOver&Lives&score//////////////////////
         document.addEventListener("keydown", keyDownHandler, false);
@@ -151,7 +151,7 @@ function drawPaddle() {
 
 function draw() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    if(!isGameOver && startGame){
+    if(!isGameOver && startGame && count != 0){
 
         drawBlocks();
         drawPaddle();
@@ -175,16 +175,29 @@ function draw() {
         x += dx;
         y += dy;
     }
-    else{
-        canvas.parentNode.removeChild(playButton);
-        canvas.parentNode.removeChild(volumeSlider);
+    if(isGameOver){
+       playButton.style.display ='none';
+       volumeSlider.style.display='none';
         audio.pause();
+    }
+    if(count ==0){
+        let win = document.createElement("img");
+        win.src='Pictures/youWin.jpg';
+        win.style.position='fixed'
+        win.style.left='27vw';
+        win.style.top='23vh'
+        win.style.width='700px';
+        win.style.height='400px';
+        canvas.parentNode.appendChild(win);
+        audio.pause();
+
     }
 }
 setInterval(draw,15);
 
 var blockRowCount = 5;
 var blockColumnCount = 8;
+let count = blockColumnCount * blockRowCount;
 var blockWidth = 80;
 var blockHeight = 20;
 var blockPadding = 15;
@@ -285,6 +298,7 @@ function blocksCollision() {
             blocks[c][r].status--;
             if (blocks[c][r].status == 0){
                 score += 10;
+                count--;
             }
             ballTouchBlock(blocks[c][r])
             
