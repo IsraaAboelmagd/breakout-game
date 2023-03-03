@@ -5,8 +5,8 @@ body {
  }
 #myCanvas{
    position: relative;
-  /* left:23vw;
-   top:15vh; */
+  left:23vw;
+   top:15vh;
    border: 1px solid black;
       background-image: url("Pictures/canvasbg.png");
       background-size: cover; /* Optional */

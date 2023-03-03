@@ -13,30 +13,70 @@ var paddleX = (canvas.width - paddleWidth) / 2;
 var rightPressed = false;
 var leftPressed = false;
 let gameEnd;
-///////////////////////////
+let isGameOver =false;
+////Start localStorage///
+if(localStorage.getItem("highScore")==null){
+    localStorage.setItem("higScore",0);
+}
+let highScore = localStorage.getItem("highScore");
+////End localStorage///
+////Game Start////
+let startGame = false;
+var StartPlay = document.createElement("button");
+StartPlay.innerText = "Start Game";
+StartPlay.style.position='fixed';
+StartPlay.style.left='45vw'
+StartPlay.style.top='45vh'
+StartPlay.style.width='200px';
+StartPlay.style.height='50px';
+StartPlay.style.backgroundColor='rgb(177, 211, 135)'
+StartPlay.style.boxShadow='gray 3px 3px'
+StartPlay.style.borderRadius='15px';
+StartPlay.style.cursor = 'pointer';
+StartPlay.addEventListener("click", function(){
+    startGame = true ;
+    StartPlay.style.display ='none';
+    audio.play();
+    canvas.parentNode.appendChild(playButton);
+    canvas.parentNode.appendChild(volumeSlider);
+});
+canvas.parentNode.appendChild(StartPlay);
+///////////
+///////////StartSound&GameOver&Lives&score////////////////
  /*manar try */
  var audio = document.getElementById("myAudio");
 
- var playButton = document.createElement("button");
- playButton.innerText = "Play";
+ var playButton = document.createElement("img");
+ playButton.src = "Pictures/sound.png";
+ playButton.style.width='20px'
+ playButton.style.position='fixed';
+ playButton.style.left='380px';
+ playButton.style.top='125px'; 
  
  var volumeSlider = document.createElement("input");
+ volumeSlider.style.position='fixed';
+ volumeSlider.style.left='400px';
+ volumeSlider.style.top='125px';
  volumeSlider.type = "range";
  volumeSlider.min = 0;
  volumeSlider.max = 1;
  volumeSlider.step = 0.1;
  volumeSlider.value = audio.volume;
  
- audio.play();
+ 
  playButton.addEventListener("click", function() {
     
    if (audio.paused) {
-    audio.play();     
-     playButton.innerText = "Pause";
+     audio.play();
+     audio.loop = true ;    
+     playButton.src = "Pictures/sound.png";
+       volumeSlider.value=audio.volume ;
    } 
    else {
      audio.pause();
-     playButton.innerText = "Play";
+     playButton.src = "Pictures/mute.png";
+     volumeSlider.value = 0;
+     
    }
  
  });
@@ -45,8 +85,7 @@ let gameEnd;
    audio.volume = volumeSlider.value;
  });
  
- canvas.parentNode.appendChild(playButton);
- canvas.parentNode.appendChild(volumeSlider);
+ 
  /*manar try */
 let lives = 3;
 function drawLives() {
@@ -55,20 +94,27 @@ function drawLives() {
     ctx.fillText(`Lives: ${lives}`, 730, 20);
   }
   function gameOver(){
+    isGameOver=true;
     ctx.font = '48px serif';
     ctx.textAlign = 'center';
     ctx.fillStyle = 'red';
-    ctx.fillText('Game Over', canvas.width/2, canvas.height/2); 
+    if(score>highScore){
+        highScore = score;
+        localStorage.setItem("highScore",`${score}`)
+    }
+    ctx.fillText('Game Over', canvas.width/2, canvas.height/2-50); 
+    ctx.fillText(`your Score: ${score}`, canvas.width/2, (canvas.height/2)); 
+    ctx.fillText(`high Score: ${highScore}`, canvas.width/2, (canvas.height/2)+50); 
     gameEnd=requestAnimationFrame(gameOver);
     }
     function drawScore(){
         ctx.font ='14px Verdana';
         ctx.fillStyle = 'red';
-        ctx.fillText(`Score: ${score}`,60,20)
+        ctx.fillText(`Score: ${score}`,canvas.width/2-40,20)
     }
-    //////////////////////////////////////
-document.addEventListener("keydown", keyDownHandler, false);
-document.addEventListener("keyup", keyUpHandler, false);
+    ////////////////EndSound&GameOver&Lives&score//////////////////////
+        document.addEventListener("keydown", keyDownHandler, false);
+        document.addEventListener("keyup", keyUpHandler, false);
 function keyDownHandler(e) {
     if (e.key == "Right" || e.key == "ArrowRight") {
         rightPressed = true;
@@ -105,27 +151,37 @@ function drawPaddle() {
 
 function draw() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    drawBlocks();
-    drawPaddle();
-    drawScore();
-    drawLives();
-    if (rightPressed) {
-        paddleX += 4;
-        if (paddleX + paddleWidth > canvas.width) {
-            paddleX = canvas.width - paddleWidth;
-        }
-    }
-    else if (leftPressed) {
-        paddleX -= 4;
-        if (paddleX < 0) {
-            paddleX = 0;
-        }
-    }
+    if(!isGameOver && startGame){
 
-    x += dx;
-    y += dy;
+        drawBlocks();
+        drawPaddle();
+        drawScore();
+        drawLives();
+        moveBall();
+        // audio.play();   
+        if (rightPressed) {
+            paddleX += 4;
+            if (paddleX + paddleWidth > canvas.width) {
+                paddleX = canvas.width - paddleWidth;
+            }
+        }
+        else if (leftPressed) {
+            paddleX -= 4;
+            if (paddleX < 0) {
+                paddleX = 0;
+            }
+        }
+    
+        x += dx;
+        y += dy;
+    }
+    else{
+        canvas.parentNode.removeChild(playButton);
+        canvas.parentNode.removeChild(volumeSlider);
+        audio.pause();
+    }
 }
-setInterval(draw);
+setInterval(draw,15);
 
 var blockRowCount = 5;
 var blockColumnCount = 8;
@@ -151,7 +207,6 @@ function drawBlocks() {
             if (blocks[c][r].status == 2) {   
                 blocks[c][r].img.src = 'Pictures/blocksbg.jpg';
                 ctx.drawImage(blocks[c][r].img, blocks[c][r].x, blocks[c][r].y, blockWidth, blockHeight);
-                // Reset shadow properties to default
             } else if(blocks[c][r].status == 1){
                 blocks[c][r].img.src = 'Pictures/Paddle.jpg';
                 ctx.drawImage(blocks[c][r].img, blocks[c][r].x, blocks[c][r].y, blockWidth, blockHeight);
@@ -177,13 +232,12 @@ function drawBall() {
 
     ctx.fill();
     ctx.closePath();
-
-   // requestAnimationFrame(drawBall)
+    
+    // requestAnimationFrame(drawBall)
 }
 
 function moveBall() {
     drawBall();
-
     if (ball.x + xDirection > canvas.width - ball.radius || ball.x + xDirection < ball.radius) {
         xDirection = -xDirection;
         bounce.play()
@@ -198,7 +252,6 @@ function moveBall() {
             yDirection = -yDirection;
         }
         else {
-            // alert("GAME OVER");
             lives--;
             if(lives==0){
                 lives=0;
@@ -216,7 +269,7 @@ function moveBall() {
     
     ball.x += xDirection
     ball.y += yDirection
-    let animation= requestAnimationFrame(moveBall)
+    // let animation= requestAnimationFrame(moveBall)
     blocksCollision();
 }
 function blocksCollision() {
@@ -256,5 +309,4 @@ function blocksCollision() {
           } 
           function resetpaddle(){
             paddleX = (canvas.width - paddleWidth) / 2;
-          }     
-moveBall()
+          } 
