@@ -175,7 +175,7 @@ function draw() {
         x += dx;
         y += dy;
     }
-    if(isGameOver){
+    if(isGameOver|| count==0){
        playButton.style.display ='none';
        volumeSlider.style.display='none';
         audio.pause();
@@ -189,7 +189,6 @@ function draw() {
         win.style.width='700px';
         win.style.height='400px';
         canvas.parentNode.appendChild(win);
-        audio.pause();
 
     }
 }
