@@ -14,6 +14,40 @@ var rightPressed = false;
 var leftPressed = false;
 let gameEnd;
 ///////////////////////////
+ /*manar try */
+ var audio = document.getElementById("myAudio");
+
+ var playButton = document.createElement("button");
+ playButton.innerText = "Play";
+ 
+ var volumeSlider = document.createElement("input");
+ volumeSlider.type = "range";
+ volumeSlider.min = 0;
+ volumeSlider.max = 1;
+ volumeSlider.step = 0.1;
+ volumeSlider.value = audio.volume;
+ 
+ audio.play();
+ playButton.addEventListener("click", function() {
+    
+   if (audio.paused) {
+    audio.play();     
+     playButton.innerText = "Pause";
+   } 
+   else {
+     audio.pause();
+     playButton.innerText = "Play";
+   }
+ 
+ });
+ 
+ volumeSlider.addEventListener("input", function() {
+   audio.volume = volumeSlider.value;
+ });
+ 
+ canvas.parentNode.appendChild(playButton);
+ canvas.parentNode.appendChild(volumeSlider);
+ /*manar try */
 let lives = 3;
 function drawLives() {
     ctx.font = "14px Verdana ";
