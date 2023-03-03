@@ -12,19 +12,21 @@ var paddleWidth = 100;
 var paddleX = (canvas.width - paddleWidth) / 2;
 var rightPressed = false;
 var leftPressed = false;
+let gameEnd;
 ///////////////////////////
 let lives = 3;
 function drawLives() {
     ctx.font = "14px Verdana ";
     ctx.fillStyle = "red";
-    ctx.fillText(`Lives: ${lives}`, 750, 20);
+    ctx.fillText(`Lives: ${lives}`, 730, 20);
   }
   function gameOver(){
     ctx.font = '48px serif';
     ctx.textAlign = 'center';
     ctx.fillStyle = 'red';
     ctx.fillText('Game Over', canvas.width/2, canvas.height/2); 
-    }requestAnimationFrame(gameOver);
+    gameEnd=requestAnimationFrame(gameOver);
+    }
     function drawScore(){
         ctx.font ='14px Verdana';
         ctx.fillStyle = 'red';
@@ -129,8 +131,8 @@ var ball = {
     radius: 10,
 
 };
-let xDirection = 2
-let yDirection = -2
+let xDirection = -3 * Math.random()
+let yDirection = 3
 
 
 function drawBall() {
@@ -142,7 +144,7 @@ function drawBall() {
     ctx.fill();
     ctx.closePath();
 
-    requestAnimationFrame(drawBall)
+   // requestAnimationFrame(drawBall)
 }
 
 function moveBall() {
@@ -167,8 +169,9 @@ function moveBall() {
             if(lives==0){
                 lives=0;
                 gameOver();
-                clearInterval(interval);
-                
+                cancelAnimationFrame(animation)
+                cancelAnimationFrame(gameEnd)
+
             }
             resetBall();
             resetpaddle();
@@ -176,9 +179,10 @@ function moveBall() {
         }
 
     }
-
+    
     ball.x += xDirection
     ball.y += yDirection
+    let animation= requestAnimationFrame(moveBall)
     blocksCollision();
 }
 function blocksCollision() {
@@ -213,10 +217,10 @@ function blocksCollision() {
         function resetBall() {
             ball.x = canvas.width / 2;
             ball.y = canvas.height - 40;
-             xDirection = 2
-             yDirection = -2
+             xDirection = 3 * Math.random()
+             yDirection = -3
           } 
           function resetpaddle(){
             paddleX = (canvas.width - paddleWidth) / 2;
           }     
-var interval = setInterval(moveBall,10)
+moveBall()
