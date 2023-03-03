@@ -125,7 +125,7 @@ function drawBlocks() {
 }
 var ball = {
     x: canvas.width / 2,
-    y: canvas.height - 30,
+    y: canvas.height - 40,
     radius: 10,
 
 };
@@ -183,26 +183,28 @@ function moveBall() {
 }
 function blocksCollision() {
     let ballInBlocks = (block) => 
-                 ball.x + 2 * ball.radius > block.x &&
+                 ball.x + ball.radius > block.x &&
                  ball.x < block.x + blockWidth &&
-                 ball.y + 2 * ball.radius > block.y &&
+                 ball.y +  ball.radius > block.y &&
                  ball.y < block.y + blockHeight;
         for (var c = 0; c < blockColumnCount; c++) {
             for (var r = 0; r < blockRowCount; r++) {       
         if (blocks[c][r].status > 0 && ballInBlocks(blocks[c][r])){
+            bounce.play()
             blocks[c][r].status--;
-                if (blocks[c][r].status == 0){
-                    score += 10;
-                }
-                    ballTouchBlock(blocks[c][r])
+            if (blocks[c][r].status == 0){
+                score += 10;
+            }
+            ballTouchBlock(blocks[c][r])
+            
 
         }
             }
         }
 }
     function ballTouchBlock(block) {
-            let fromLeft = () => ball.x + 2 * ball.radius - xDirection <= block.x;
-            let fromRight = () => ball.x - xDirection >= blockWidth + block.x;
+            let fromLeft = () => ball.x +  ball.radius - xDirection <= block.x;
+            let fromRight = () => ball.x  - xDirection >= blockWidth + block.x;
             if (fromLeft() || fromRight())
                 xDirection = -xDirection
             else
@@ -210,7 +212,7 @@ function blocksCollision() {
         }
         function resetBall() {
             ball.x = canvas.width / 2;
-            ball.y = canvas.height - 30;
+            ball.y = canvas.height - 40;
              xDirection = 2
              yDirection = -2
           } 
